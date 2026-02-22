@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ApplyWise</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 230px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8faff;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .logo h1 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e3a5f;
+    }
+    .logo span {
+      font-size: 20px;
+    }
+    button {
+      width: 100%;
+      padding: 11px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+    }
+    button:hover { background: #1d4ed8; }
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <span>📋</span>
+    <h1>ApplyWise</h1>
+  </div>
+  <button id="openDialog">Log This Job</button>
+  <p class="hint">or press Ctrl+Shift+J</p>
+  <script src="popup.js"></script>
+</body>
+</html>
