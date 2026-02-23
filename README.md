@@ -12,3 +12,44 @@ extension, n8n-based email classification with real-time Telegram alerts, a user
 Sheets backend for full data control, a personalized application funnel dashboard, and a
 community space for anonymized peer learning—making it a customizable, student-focused
 alternative designed for competitive job markets like India.
+
+## Running with Docker
+
+### Prerequisites
+
+- Docker (v20.10 or newer)
+- Docker Compose (included with Docker Desktop)
+
+### Verify your installation:
+
+```bash
+docker --version
+docker compose version
+```
+
+If docker compose is unavailable, you may be using the legacy Docker Compose binary:
+
+```bash
+docker-compose --version
+```
+
+From the project root directory:
+
+```bash
+docker compose up --build
+```
+
+If you are using legacy Docker Compose:
+```bash
+docker-compose up --build
+```
+
+This will build and start all required services (frontend, backend, database).
+
+### Stopping the application
+```bash
+docker compose down
+```
+
+Note: Docker Compose v2 (docker compose) is recommended.
+Legacy docker-compose is supported but deprecated.

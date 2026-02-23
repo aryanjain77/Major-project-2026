@@ -1,0 +1,12 @@
+# NEVER TRACK DEPENDENCIES
+**/node_modules/
+**/.npm/
+**/.cache/
+
+# Build outputs
+**/dist/
+**/build/
+
+# Docker
+**/docker-data/
+**/mongodata/

@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./community-postings-backend
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/appdb
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./applywise-web
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
