@@ -65,7 +65,7 @@ function App() {
                 user ? (
                   <Navigate to="/dashboard" replace /> // redirect if already logged in
                 ) : (
-                  <div className="login-prompt">
+                  <div className="login-prompt card">
                     <h2>Sign in to start tracking jobs</h2>
                     <p>Organize applications, see progress, get alerts, and learn from others.</p>
                     <button className="btn btn-primary" onClick={handleLogin}>
