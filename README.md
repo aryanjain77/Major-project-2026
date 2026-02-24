@@ -46,6 +46,7 @@ docker-compose up --build
 
 This will build and start all required services (frontend, backend, database).
 
+
 ### Stopping the application
 ```bash
 docker compose down
@@ -53,3 +54,14 @@ docker compose down
 
 Note: Docker Compose v2 (docker compose) is recommended.
 Legacy docker-compose is supported but deprecated.
+
+
+
+# chrome extension 
+the chrome extension works with keyboard shortcut or can be directly accessed via extension icon 
+# procedure to access the extension 
+go to chrome://extensions/
+then enable developers mode
+load unpack 
+select je-2
+the extension becomes usable after the google account is in sync with the web application
