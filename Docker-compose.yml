@@ -1,7 +1,13 @@
-
 services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongodata:/data/db
+
   backend:
     build: ./community-postings-backend
+    restart: unless-stopped
     ports:
       - "5000:5000"
     environment:
@@ -12,15 +18,18 @@ services:
 
   frontend:
     build: ./applywise-web
+    restart: unless-stopped
     ports:
       - "3000:80"
     depends_on:
       - backend
 
-  mongo:
-    image: mongo:7
-    volumes:
-      - mongodata:/data/db
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://frontend:80
+    depends_on:
+      - frontend
 
 volumes:
   mongodata:
