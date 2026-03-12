@@ -1,0 +1,16 @@
+{
+  "name": "applywise-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "applywise/apps/*",
+    "applywise/packages/*"
+  ],
+  "scripts": {
+    "dev:web": "cd applywise/apps/web && npm run dev",
+    "dev:extension": "cd applywise/apps/extension && npm run dev || echo \"No dev script for extension yet\"",
+    "dev:api": "cd applywise/packages/api && npm run dev || echo \"No dev script for api yet\"",
+    "dev:ai-service": "cd applywise/apps/ai-service && python app.py",
+    "lint": "echo \"Add root linting later\""
+  }
+}
