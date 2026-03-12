@@ -1,0 +1,14 @@
+flask
+flask-cors
+joblib
+pdfplumber
+reportlab
+google-generativeai
+python-dotenv
+nltk
+pandas
+youtube-search-python
+requests
+beautifulsoup4
+selenium
+webdriver-manager

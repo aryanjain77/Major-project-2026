@@ -1,0 +1,19 @@
+2025-09-06 16:32:03,296 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.35:5000
+2025-09-06 16:32:03,296 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-06 16:32:03,297 - INFO -  * Restarting with stat
+2025-09-06 16:32:03,538 - WARNING -  * Debugger is active!
+2025-09-06 16:32:03,546 - INFO -  * Debugger PIN: 100-817-342
+2025-09-06 16:33:53,532 - DEBUG - Received POST request to /api/resume/create
+2025-09-06 16:33:53,545 - DEBUG - Form data: {'name': 'John Doe', 'email': 'johndoe.dev@gmail.com', 'phone': '1234567899', 'about': 'asdf', 'skills': 'java', 'experience': '[{"title":"frontend engineer","company":"Amazon | Bangalore, India","years":"Jul 2021 – Present","description":"asd"}]', 'projects': '[{"title":"Hope gear ","description":"sda","link":"https://hopegear-d2554.web.app/"}]', 'education': 'iit', 'certifications': 'aws', 'achievements': 'won', 'github': 'https://github.com/wisdompeak/LeetCode', 'leetcode': 'https://leetcode.com/johndoe123'}
+2025-09-06 16:33:53,545 - DEBUG - Photo file: charlie-green-3JmfENcL24M-unsplash.jpg
+2025-09-06 16:33:53,545 - DEBUG - Experience: [{'title': 'frontend engineer', 'company': 'Amazon | Bangalore, India', 'years': 'Jul 2021 – Present', 'description': 'asd'}]
+2025-09-06 16:33:53,545 - DEBUG - Projects: [{'title': 'Hope gear ', 'description': 'sda', 'link': 'https://hopegear-d2554.web.app/'}]
+2025-09-06 16:33:53,550 - ERROR - Error generating resume: linkURL() got multiple values for argument 'relative' with traceback: Traceback (most recent call last):
+  File "/Users/shreyapant/trial/app.py", line 156, in generate_resume
+    c.linkURL(link, right_x, y, c.stringWidth(link, "Helvetica", 10), 10, relative=1)
+TypeError: linkURL() got multiple values for argument 'relative'
+
+2025-09-06 16:33:53,552 - INFO - 127.0.0.1 - - [06/Sep/2025 16:33:53] "[35m[1mPOST /api/resume/create HTTP/1.1[0m" 500 -

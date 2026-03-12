@@ -1,0 +1,817 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #111;
+  border-radius: 0.3125rem;
+  box-shadow: inset 0.125rem 0.125rem 0.125rem rgba(255, 255, 255, 0.25), inset -0.125rem -0.125rem 0.125rem rgba(0, 0, 0, 0.25);
+  cursor: default;
+}
+
+::-webkit-scrollbar-track {
+  background: #333;
+}
+
+::selection {
+  background: #fff;
+  color: #333;
+}
+
+html {
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: black;
+  overflow-x: hidden;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.ui-panel {
+  display: none;
+  position: fixed;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 120, 50, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  padding: 15px;
+  color: #eee;
+  font-family: 'Inter', sans-serif;
+}
+
+#instructions-container {
+  top: 20px;
+  left: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+#instruction-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+#theme-selector {
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 150px;
+}
+
+#theme-selector-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.theme-grid {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.theme-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  outline: none;
+  overflow: hidden;
+}
+
+.theme-button:hover,
+.theme-button:focus {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.theme-button.active {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(255, 200, 150, 0.6);
+}
+
+#theme-1 {
+  background: linear-gradient(45deg, #4F46E5, #7C3AED, #C026D3, #DB2777);
+}
+
+#theme-2 {
+  background: linear-gradient(45deg, #F59E0B, #F97316, #DC2626, #7F1D1D);
+}
+
+#theme-3 {
+  background: linear-gradient(45deg, #EC4899, #8B5CF6, #6366F1, #3B82F6);
+}
+
+#theme-4 {
+  background: linear-gradient(45deg, #10B981, #A3E635, #FACC15, #FB923C);
+}
+
+#density-controls {
+  margin-top: 8px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.density-label {
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.density-slider {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 120, 50, 0.3);
+  outline: none;
+  cursor: pointer;
+}
+
+.density-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 120, 50, 0.8);
+  cursor: pointer;
+  transition: transform 0.1s, background 0.1s;
+}
+
+.density-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 120, 50, 0.8);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s, background 0.1s;
+}
+
+.density-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: rgba(255, 140, 50, 1);
+}
+
+.density-slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  background: rgba(255, 140, 50, 1);
+}
+
+#control-buttons {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 120, 50, 0.2);
+}
+
+.control-button {
+  display: none;
+  background: rgba(255, 120, 50, 0.2);
+  color: #eee;
+  border: 1px solid rgba(255, 150, 50, 0.3);
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.control-button:hover,
+.control-button:focus {
+  background: rgba(255, 120, 50, 0.4);
+  outline: none;
+}
+
+.control-button:active {
+  background: rgba(255, 120, 50, 0.6);
+  transform: scale(0.95);
+}
+
+.navbar {
+  background-color: #1976d2;
+  /* background-color: rgba(187, 61, 61, 0.726); */
+  color: white;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 5;
+  opacity: 1;
+  margin-top: 20px;
+
+.histogram-canvas {
+  max-width: 100%;
+  width: 600px;
+  height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  display: block; /* Ensure canvas is visible */
+}
+
+@media (max-width: 640px) {
+  #instructions-container {
+    max-width: calc(100% - 40px);
+    font-size: 13px;
+    padding: 10px 15px;
+    top: 10px;
+    left: 10px;
+  }
+  #instruction-title {
+    font-size: 14px;
+  }
+  #theme-selector {
+    top: auto;
+    bottom: 20px;
+    right: 10px;
+    left: auto;
+    transform: none;
+    max-width: 120px;
+    padding: 10px;
+  }
+  #theme-selector-title {
+    font-size: 14px;
+  }
+  .theme-button {
+    width: 30px;
+    height: 30px;
+  }
+  .density-label {
+    font-size: 12px;
+  }
+  #control-buttons {
+    bottom: 10px;
+    gap: 10px;
+    padding: 8px 10px;
+  }
+  .control-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 65px;
+  }
+  .landing-container {
+    padding: 20px 10px;
+  }
+  .landing-content,
+  .resume-section,
+  .predict-section,
+  .market-trends-section {
+    padding: 24px;
+    margin: 20px 10px;
+  }
+  .landing-content h1,
+  .resume-section h2,
+  .predict-section h2,
+  .market-trends-section h2 {
+    font-size: 1.8rem;
+  }
+  .landing-content h2 {
+    font-size: 1.3rem;
+  }
+  .landing-content p,
+  .resume-section p,
+  .predict-section p,
+  .market-trends-section p {
+    font-size: 1rem;
+  }
+  .landing-content button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  .section-content h3 {
+    font-size: 1.3rem;
+  }
+  .section-content h4 {
+    font-size: 1.2rem;
+  }
+  .job-card h3 {
+    font-size: 1.2rem;
+  }
+  .job-card p {
+    font-size: 0.9rem;
+  }
+  .job-apply-button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  .histogram-container {
+    max-width: 100%;
+  }
+  .histogram-canvas {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media (max-width: 400px) {
+  #theme-selector {
+    flex-direction: column;
+    align-items: center;
+    max-width: none;
+    width: calc(100% - 20px);
+    left: 10px;
+    right: 10px;
+    bottom: 75px;
+  }
+  .theme-grid {
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    justify-items: center;
+  }
+  #density-controls {
+    width: 80%;
+    margin-top: 15px;
+  }
+  #control-buttons {
+    width: calc(100% - 20px);
+    justify-content: space-around;
+  }
+  .landing-content,
+  .resume-section,
+  .predict-section,
+  .market-trends-section {
+    padding: 16px;
+    margin: 16px;
+  }
+  .landing-content h1,
+  .resume-section h2,
+  .predict-section h2,
+  .market-trends-section h2 {
+    font-size: 1.6rem;
+  }
+  .landing-content h2 {
+    font-size: 1.2rem;
+  }
+  .landing-content p,
+  .resume-section p,
+  .predict-section p,
+  .market-trends-section p {
+    font-size: 0.9rem;
+  }
+  .landing-content button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  .section-content h3 {
+    font-size: 1.2rem;
+  }
+  .section-content h4 {
+    font-size: 1.1rem;
+  }
+  .job-card h3 {
+    font-size: 1.1rem;
+  }
+  .job-card p {
+    font-size: 0.8rem;
+  }
+  .job-apply-button {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+  .histogram-container {
+    max-width: 100%;
+  }
+  .histogram-canvas {
+    width: 100%;
+    height: 150px;
+  }
+}/* Previous index.css content */
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+/* Previous index.css content */
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.landing-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.landing-content h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  color: #e0e0e0;
+}
+
+.landing-content p {
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
+.landing-content .button-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.landing-content button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.landing-content button:hover {
+  background-color: #1565c0;
+  transform: translateY(-2px);
+}
+
+.resume-section,
+.predict-section,
+.market-trends-section {
+  max-width: 800px;
+  width: 100%;
+  margin: 40px 0;
+  padding: 32px;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  position: relative;
+  z-index: 5;
+}
+
+.resume-section h2,
+.predict-section h2,
+.market-trends-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.resume-section p,
+.predict-section p,
+.market-trends-section p {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.section-content h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.job-listings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.job-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+}
+
+.job-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.job-card p {
+  font-size: 1rem;
+  color: #d0d0d0;
+  margin-bottom: 8px;
+}
+
+.job-apply-button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.job-apply-button:hover {
+  background-color: #1565c0;
+  transform: translateY(-2px);
+}
+
+.histogram-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  overflow-x: auto;
+  visibility: visible; /* Ensure visibility */
+  opacity: 1; /* Ensure not hidden */
+  margin-top: 20px;
+}
+
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+
+.histogram-canvas {
+  max-width: 100%;
+  width: 600px;
+  height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  display: block; /* Ensure canvas is visible */
+}
+
+@media (max-width: 640px) {
+  #instructions-container {
+    max-width: calc(100% - 40px);
+    font-size: 13px;
+    padding: 10px 15px;
+    top: 10px;
+    left: 10px;
+  }
+  #instruction-title {
+    font-size: 14px;
+  }
+  #theme-selector {
+    top: auto;
+    bottom: 20px;
+    right: 10px;
+    left: auto;
+    transform: none;
+    max-width: 120px;
+    padding: 10px;
+  }
+  #theme-selector-title {
+    font-size: 14px;
+  }
+  .theme-button {
+    width: 30px;
+    height: 30px;
+  }
+  .density-label {
+    font-size: 12px;
+  }
+  #control-buttons {
+    bottom: 10px;
+    gap: 10px;
+    padding: 8px 10px;
+  }
+  .control-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 65px;
+  }
+  .landing-container {
+    padding: 20px 10px;
+  }
+  .landing-content,
+  .resume-section,
+  .predict-section,
+  .market-trends-section {
+    padding: 24px;
+    margin: 20px 10px;
+  }
+  .landing-content h1,
+  .resume-section h2,
+  .predict-section h2,
+  .market-trends-section h2 {
+    font-size: 1.8rem;
+  }
+  .landing-content h2 {
+    font-size: 1.3rem;
+  }
+  .landing-content p,
+  .resume-section p,
+  .predict-section p,
+  .market-trends-section p {
+    font-size: 1rem;
+  }
+  .landing-content button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  .section-content h3 {
+    font-size: 1.3rem;
+  }
+  .section-content h4 {
+    font-size: 1.2rem;
+  }
+  .job-card h3 {
+    font-size: 1.2rem;
+  }
+  .job-card p {
+    font-size: 0.9rem;
+  }
+  .job-apply-button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  .histogram-container {
+    max-width: 100%;
+  }
+  .histogram-canvas {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media (max-width: 400px) {
+  #theme-selector {
+    flex-direction: column;
+    align-items: center;
+    max-width: none;
+    width: calc(100% - 20px);
+    left: 10px;
+    right: 10px;
+    bottom: 75px;
+  }
+  .theme-grid {
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    justify-items: center;
+  }
+  #density-controls {
+    width: 80%;
+    margin-top: 15px;
+  }
+  #control-buttons {
+    width: calc(100% - 20px);
+    justify-content: space-around;
+  }
+  .landing-content,
+  .resume-section,
+  .predict-section,
+  .market-trends-section {
+    padding: 16px;
+    margin: 16px;
+  }
+  .landing-content h1,
+  .resume-section h2,
+  .predict-section h2,
+  .market-trends-section h2 {
+    font-size: 1.6rem;
+  }
+  .landing-content h2 {
+    font-size: 1.2rem;
+  }
+  .landing-content p,
+  .resume-section p,
+  .predict-section p,
+  .market-trends-section p {
+    font-size: 0.9rem;
+  }
+  .landing-content button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  .section-content h3 {
+    font-size: 1.2rem;
+  }
+  .section-content h4 {
+    font-size: 1.1rem;
+  }
+  .job-card h3 {
+    font-size: 1.1rem;
+  }
+  .job-card p {
+    font-size: 0.8rem;
+  }
+  .job-apply-button {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+  .histogram-container {
+    max-width: 100%;
+  }
+  .histogram-canvas {
+    width: 100%;
+    height: 150px;
+  }
+}/* Previous index.css content */
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+/* Previous index.css content */
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}}}

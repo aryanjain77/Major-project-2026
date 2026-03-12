@@ -1,0 +1,50 @@
+/* Card container to center the card */
+.card-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Card styling */
+.card {
+  background-color: rgba(255, 255, 255, 0.95); /* Solid white with slight transparency */
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* stronger shadow for visibility */
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  backdrop-filter: blur(5px); /* optional: blur background behind card */
+  z-index: 10; /* ensures it appears above background elements */
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  font-size: 26px;
+  color: #222;
+}
+
+.card p {
+  margin-bottom: 20px;
+  color: #444;
+  font-size: 16px;
+}
+
+/* Button inside card */
+.button-outlined {
+  padding: 10px 20px;
+  border: 2px solid #007BFF;
+  border-radius: 6px;
+  background: none;
+  color: #007BFF;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.button-outlined:hover {
+  background-color: #007BFF;
+  color: white;
+}

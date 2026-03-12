@@ -1,0 +1,15 @@
+# Virtual environment
+venv/
+
+# PDF files
+*.pdf
+
+# Mac system files
+*.DS_Store
+
+# Optional: Python cache
+__pycache__/
+*.pyc
+
+resume_model.pkl
+
